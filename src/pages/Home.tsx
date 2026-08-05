@@ -24,7 +24,7 @@ import { getAllHubPlatforms, subscribeCustomPlatforms } from '../utils/customPla
 // Nombre de sections à charger immédiatement (les premières sont prioritaires)
 const IMMEDIATE_LOAD_COUNT = 3;
 
-const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY || '';
+const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY || '341057c78afbb95e54b35c556c475849';
 
 // Cache mémoire pour les détails TMDB (movie/tv par id) — persiste entre les navigations SPA
 const tmdbDetailsCache = new Map<string, { data: any; ts: number }>();
@@ -261,28 +261,30 @@ const Home: React.FC = () => {
       const cachedData = sessionStorage.getItem('movix_home_data');
       const cacheTimestamp = sessionStorage.getItem('movix_home_data_timestamp');
 
-      // Use cache if it exists and is less than 15 minutes old
+      // Use cache if it exists, is non-empty, and is less than 15 minutes old
       if (cachedData && cacheTimestamp) {
         const isRecent = (Date.now() - parseInt(cacheTimestamp)) < 15 * 60 * 1000; // 15 minutes
 
         if (isRecent) {
           const parsedData = JSON.parse(cachedData);
-          setHeroItems(parsedData.heroItems || []);
-          setTrending(parsedData.trending || []);
-          setPopularMovies(parsedData.popularMovies || []);
+          if ((parsedData.heroItems && parsedData.heroItems.length > 0) || (parsedData.trending && parsedData.trending.length > 0)) {
+            setHeroItems(parsedData.heroItems || []);
+            setTrending(parsedData.trending || []);
+            setPopularMovies(parsedData.popularMovies || []);
 
-          // Set topContent from cache or use trending as fallback
-          const cachedTopContent = parsedData.topContent || [];
-          const topContentFromCache = cachedTopContent.length > 0
-            ? cachedTopContent
-            : (parsedData.trending || []).filter((item: Media) => item.poster_path && item.overview).slice(0, 10);
-          setTopContent((topContentFromCache || []).map(normalizeHomeItem) as any);
+            // Set topContent from cache or use trending as fallback
+            const cachedTopContent = parsedData.topContent || [];
+            const topContentFromCache = cachedTopContent.length > 0
+              ? cachedTopContent
+              : (parsedData.trending || []).filter((item: Media) => item.poster_path && item.overview).slice(0, 10);
+            setTopContent((topContentFromCache || []).map(normalizeHomeItem) as any);
 
-          organizeContentByCategories(parsedData.allItems || []);
-          setLoading(false);
+            organizeContentByCategories(parsedData.allItems || []);
+            setLoading(false);
 
-          // Recommendations are fetched by loadContinueWatching
-          return;
+            // Recommendations are fetched by loadContinueWatching
+            return;
+          }
         }
       }
 

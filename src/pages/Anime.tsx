@@ -13,7 +13,7 @@ import { getTmdbLanguage } from '../i18n';
 import { getNumericAge } from '../utils/certificationUtils';
 import { resolveTmdbKeywordId } from '../utils/tmdbKeywords';
 
-const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY || '';
+const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY || '341057c78afbb95e54b35c556c475849';
 const IMMEDIATE_LOAD_COUNT = 2;
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 const DATA_CACHE_TTL_MS = 15 * 60 * 1000;

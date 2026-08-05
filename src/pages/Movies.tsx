@@ -28,7 +28,7 @@ interface Movie {
   genre_ids?: number[];
 }
 
-const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY || '';
+const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY || '341057c78afbb95e54b35c556c475849';
 const MAIN_API = import.meta.env.VITE_MAIN_API;
 const BACKUP_API = import.meta.env.VITE_BACKUP_API;
 const ITEMS_PER_PAGE = 20;

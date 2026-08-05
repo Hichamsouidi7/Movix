@@ -60,3 +60,5 @@ API/BOT/
 **/__pycache__/
 *.pyc
 *.pyo
+
+.vercel
